@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script
+        src="https://www.paypal.com/sdk/js?client-id=AYOqp3mELxzbn4OXvEzqUmYPcfAIUHob_Ca9aB4n6yRhJQ-ZMzXtXRTbyAjLoiv2SkHeHwVjgX2mPjYF"></script>
+    <style>
+        /* Custom CSS for this page */
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            flex: 1;
+            margin-top: 20px;
+        }
+
+        header {
+            background-color: #000000;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .course-card {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px;
+            background-color: #fff;
+            position: relative;
+        }
+
+        .course-title {
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            /* Make the title clickable */
+        }
+
+        .course-description {
+            margin-top: 10px;
+        }
+
+        .course-price {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .subscribe-button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .subscribe-button:hover {
+            background-color: #0056b3;
+        }
+
+        .student-courses {
+            display: none;
+        }
+
+        .student-course-title {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .student-course-link {
+            margin-top: 5px;
+        }
+
+        .search-bar {
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <h1>E Learning Platform</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('subscribed') }}">Subscribed</a></li>
+                <li><a href="{{ url_for('home') }}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- Add a search bar to search for courses -->
+        <input type="text" class="search-bar" placeholder="Search for courses..." oninput="searchCourses(this.value)">
+
+        <!-- Display available courses -->
+        <div class="course-card">
+            <div class="course-title">Python</div>
+            <div class="course-description">
+               <span id="description-1">Python is a high-level, general-purpose programming language.
+                    Its design philosophy emphasizes code readability with the use of significant indentation.
+                    Python is dynamically typed and garbage-collected.
+                    It supports multiple programming paradigms, including structured (particularly procedural),
+                    object-oriented and functional programming. It is often described as a "batteries included"
+                    language due to its comprehensive standard library.</span>
+            </div>
+
+            <button class="btn btn-secondary subscribe-button" onclick="initiatePayPalPayment(1, 'C Programming', 0.00)"
+                disabled>Subscribe</button>
+        </div>
+
+        <!-- Repeat similar structure for other courses -->
+        <div class="course-card" data-course-id="2">
+            <div class="course-title" onclick="toggleCourseInfo(2)">JAVA</div>
+            <div class="course-description">
+                <span id="description-2">Java is a high-level, class-based, object-oriented programming
+                    language that is designed to have as few implementation dependencies as possible.
+                    It is a general-purpose programming language intended to let programmers write once,
+                    run anywhere (WORA),[16] meaning that compiled Java code can run on all platforms that
+                    support Java without the need to recompile.[17] Java applications are typically compiled
+                    to bytecode that can run on any Java virtual machine (JVM) regardless of the underlying
+                    computer architecture. The syntax of Java is similar to C and C++, but has fewer low-level
+                    facilities than either of them. The Java runtime provides dynamic capabilities
+                    (such as reflection and runtime code modification) that are typically not available in
+                    traditional compiled languages.</span>
+            </div>
+            <div class="course-price">
+                <span id="price-3">$59.99</span>
+            </div>
+
+            <button class="subscribe-button"
+            onclick="startNpm()">Subscribe</button>
+        
+
+
+        </div>
+        <!----  <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                <input type="hidden" name="cmd" value="_s-xclick" />
+                <input type="hidden" name="hosted_button_id" value="JWEBTC8TJYE3U" />
+                <input type="hidden" name="currency_code" value="USD" />
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_subscribe_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Subscribe" />
+              </form> --->
+
+        <div class="course-card" data-course-id="3">
+            <div class="course-title" onclick="toggleCourseInfo(3)">SQL</div>
+            <div class="course-description">
+                <span id="description-3">Structured Query Language (SQL) is a domain-specific language
+                    used in programming and designed for managing data held in a relational database
+                    management system (RDBMS), or for stream processing in a relational data stream
+                    management system (RDSMS). It is particularly useful in handling structured data,
+                    i.e., data incorporating relations among entities and variables.
+                    Introduced in the 1970s, SQL offered two main advantages over older read–write APIs
+                    such as ISAM or VSAM. Firstly, it introduced the concept of accessing many records
+                    with one single command. Secondly, it eliminates the need to specify how to reach a
+                    record, i.e., with or without an index.</span>
+            </div>
+            <div class="course-price">
+                <span id="price-3">$59.99</span>
+            </div>
+           
+                <button class="subscribe-button"
+                onclick="startNpm()">Subscribe</button>
+            
+        </div>
+
+        <!-- Add more courses as needed -->
+
+        <!-- Display subscribed courses -->
+        <div class="student-courses" id="student-courses">
+            <div class="student-course-title">Subscribed Courses:</div>
+            <!-- Add subscribed course links dynamically -->
+        </div>
+    </div>
+
+
+   
+    <div class="footer">
+        &copy; 2023 Nikhil Naveen Navali. All rights reserved.
+    </div>
+
+    <script>
+        // JavaScript code for the student dashboard
+        function toggleCourseInfo(courseId) {
+            const courseDescription = document.getElementById(`description-${courseId}`);
+            courseDescription.style.display = courseDescription.style.display === 'none' ? 'block' : 'none';
+        }
+
+
+        
+        function initiatePayPalPayment(courseId, courseName, price) {
+            paypal.Buttons({
+                createOrder: function (data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                            description: courseName,
+                            amount: {
+                                value: price,
+                            },
+                        }],
+                    });
+                },
+                onApprove: function (data, actions) {
+                    return actions.order.capture().then(function (details) {
+                        // Payment successful; you can handle the subscription logic here
+                        alert('Payment completed for ' + courseName + '!'); // Replace with your logic
+                    });
+                },
+            }).render('#paypal-button-container');
+        }
+
+        function subscribeCourse(courseId) {
+            const courseCard = document.querySelector(`.course-card[data-course-id="${courseId}"]`);
+            if (courseCard) {
+                courseCard.style.display = 'none';
+
+                // Add the subscribed course link to the student's list of courses
+                const subscribedCourses = document.getElementById('student-courses');
+                const courseTitle = document.querySelector(`.course-card[data-course-id="${courseId}"] .course-title`);
+                const courseLink = document.createElement('a');
+                courseLink.href = '#'; // Add the actual course link here
+                courseLink.textContent = courseTitle.textContent;
+                courseLink.className = 'student-course-link';
+                subscribedCourses.appendChild(courseLink);
+            }
+        }
+
+        function searchCourses(query) {
+            const courseCards = document.querySelectorAll('.course-card');
+            for (const card of courseCards) {
+                const courseTitle = card.querySelector('.course-title');
+                if (courseTitle.textContent.toLowerCase().includes(query.toLowerCase())) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            }
+        }
+
+
+
+
+        function startNpm() {
+            window.location.href = "http://localhost:8888";
+            fetch('/start-npm', { method: 'GET' })
+                .then(response => {
+                    if (response.status === 200) {
+                        console.log('npm start initiated.');
+                        // Only change the window location if npm start was successful.
+
+
+
+
+                    } else {
+                        console.error('Failed to initiate npm start.');
+                    }
+                });
+        }
+
+
+
+
+        function redirectToPayPal() {
+            // Construct the URL with query parameters
+            const url = `/http://localhost:8888/`;
+
+            // Redirect the user to the PayPal integration folder
+            window.location.href = url;
+        }
+        n
+
+    </script>
+</body>
+
+</html>
